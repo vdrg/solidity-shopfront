@@ -45,7 +45,9 @@ class Purchases extends Component {
 
   componentWillUnmount() {
     const { purchaseEvent } = this.state;
-    purchaseEvent.stopWatching();
+    if (purchaseEvent) {
+      purchaseEvent.stopWatching();
+    }
   }
 
   render() {
