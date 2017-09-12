@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { Menu, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import NetworkStatus from 'react-web3-network-status';
 
 // Menu item component
 const MenuItem = ({ name, icon, text, path, to }) =>
@@ -33,6 +34,9 @@ class App extends Component {
     return (
       <div>
         <Menu style={styles.sidebar} fixed='left' size='large' icon='labeled' vertical inverted>
+            <Menu.Item>
+              <NetworkStatus/>
+            </Menu.Item>
             <MenuItem
               to='/'
               path={pathname}

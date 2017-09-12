@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { Map } from 'immutable';
+import NetworkStatus from 'react-web3-network-status'
 
 import MerchantInfo from './MerchantInfo';
 import RegisterForm from './RegisterForm';
@@ -149,7 +150,7 @@ class Merchant extends Component {
 
   componentWillUnmount() {
     const { merchantEvents } = this.state;
-    if (merchantEvents !== null) {
+    if (merchantEvents) {
       merchantEvents.stopWatching();
     }
   }
@@ -168,7 +169,11 @@ class Merchant extends Component {
     return (
       <Dimmer.Dimmable style={styles.container} dimmed={loading}>
         <Dimmer active={loading}>
-          <Loader indeterminate>Fetching Data</Loader>
+          <div>
+            <Loader indeterminate>
+            <NetworkStatus />
+          </Loader>
+          </div>
         </Dimmer>
         <div style={styles.content}>
           {address && (
