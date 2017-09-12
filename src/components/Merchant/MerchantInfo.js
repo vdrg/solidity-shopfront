@@ -61,7 +61,7 @@ class MerchantInfo extends Component {
             disabled={!weiAvailable.gt(0)}
             onClick={onWithdraw}
           >
-            Withdraw {weiAvailable.toString(10)} wei
+            Withdraw {weiAvailable.toString(10)} Wei
           </Button>
         </Header>
         <Products products={merchantProducts} onDelete={onDeleteProduct}>

@@ -60,7 +60,7 @@ class Merchant extends Component {
     await shopfrontContract.registerMerchant(registerName, { from: accounts[0], gas: 700000 })
     const address = await shopfrontContract.merchantAdmins(accounts[0]);
     const merchantContract = await MerchantContract(web3, address);
-    const merchantEvents = merchantContract.allEvents({ fromBlock: web3.eth.blockNumber });
+    const merchantEvents = merchantContract.allEvents({ fromBlock: await web3.eth.getBlockNumberPromise() });
     merchantEvents.watch(this.handleMerchantEvent);
     const merchantInfo = await getMerchantInfo(merchantContract);
     this.setState({ 
@@ -116,7 +116,7 @@ class Merchant extends Component {
   async componentDidMount() {
     const { web3 } = window;
 
-    const accounts = web3.eth.accounts;
+    const accounts = await web3.eth.getAccountsPromise();
 
     const shopfrontContract = await ShopfrontContract(web3);
     let address = await shopfrontContract.merchantAdmins(accounts[0])
@@ -128,10 +128,10 @@ class Merchant extends Component {
 
     if (address) {
       merchantContract = await MerchantContract(web3, address);
-      merchantEvents = merchantContract.allEvents({ fromBlock: web3.eth.blockNumber });
+      merchantEvents = merchantContract.allEvents({ fromBlock: await web3.eth.getBlockNumberPromise() });
       merchantEvents.watch(this.handleMerchantEvent);
       merchantInfo = await getMerchantInfo(merchantContract);
-      weiAvailable = web3.eth.getBalance(address);
+      weiAvailable = await web3.eth.getBalancePromise(address);
     }
 
     this.setState({ 

@@ -16,20 +16,20 @@ const promisify = web3 => {
   // List synchronous functions masquerading as values.
   const syncGetters = {
     db: [],
-    eth: [ "accounts", "blockNumber", "coinbase", "gasPrice", "hashrate",
-      "mining", "protocolVersion", "syncing" ],
-    net: [ "listening", "peerCount" ],
-    personal: [ "listAccounts" ],
+    eth: [ 'accounts', 'blockNumber', 'coinbase', 'gasPrice', 'hashrate',
+      'mining', 'protocolVersion', 'syncing' ],
+    net: [ 'listening', 'peerCount' ],
+    personal: [ 'listAccounts' ],
     shh: [],
-    version: [ "ethereum", "network", "node", "whisper" ]
+    version: [ 'ethereum', 'network', 'node', 'whisper' ]
   };
 
   Object.keys(syncGetters).forEach(group => {
     Object.keys(web3[group]).forEach(method => {
       if (syncGetters[group].indexOf(method) > -1) {
         // Skip
-      } else if (typeof web3[group][method] === "function") {
-        web3[group][method + "Promise"] = () => {
+      } else if (typeof web3[group][method] === 'function') {
+        web3[group][method + 'Promise'] = function() {
           const args = arguments;
           return new Promise((resolve, reject) => {
             args[args.length] = callbackToResolve(resolve, reject);

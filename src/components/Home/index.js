@@ -65,11 +65,11 @@ class Home extends Component {
 
     const products = new Map(merchantProducts);
 
-    const productBoughtEvent = shopfrontContract.LogProductBought({}, { fromBlock: web3.eth.blockNumber });
+    const productBoughtEvent = shopfrontContract.LogProductBought({}, { fromBlock: await web3.eth.getBlockNumberPromise() });
     productBoughtEvent.watch(this.handleProductBoughtEvent);
 
     this.setState({ 
-      accounts: web3.eth.accounts,
+      accounts: await web3.eth.getAccountsPromise(),
       shopfrontContract,
       loading: false,
       products

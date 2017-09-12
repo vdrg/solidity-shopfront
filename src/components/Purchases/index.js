@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Checkbox, Dimmer, Loader } from 'semantic-ui-react';
+import { Header, Checkbox, Dimmer, Loader } from 'semantic-ui-react';
 import { List } from 'immutable';
 
 import { ShopfrontContract } from '../../eth/contracts';
@@ -18,7 +18,9 @@ class Purchases extends Component {
     const { web3 } = window;
 
     const shopfrontContract = await ShopfrontContract(web3);
-    const purchaseEvent = shopfrontContract.LogProductBought({}, { fromBlock: 0 })
+    const purchaseEvent = shopfrontContract.LogProductBought({}, { 
+      fromBlock: await web3.eth.getBlockNumberPromise() - 100
+    })
 
     purchaseEvent.watch(async (err, event) => {
       const { purchases } = this.state;
@@ -40,7 +42,7 @@ class Purchases extends Component {
       }
     })
 
-    this.setState({ loading: false, purchaseEvent, accounts: web3.eth.accounts });
+    this.setState({ loading: false, purchaseEvent, accounts: await web3.eth.getAccountsPromise() });
   }
 
   componentWillUnmount() {
@@ -61,6 +63,7 @@ class Purchases extends Component {
           <Loader indeterminate>Fetching Data</Loader>
         </Dimmer>
         <div style={styles.content}>
+          <Header>Most Recent Purchases (100 blocks)</Header>
           <Checkbox label='Only show my purchases' onChange={() => this.setState({ onlyPersonal: !onlyPersonal })} checked={onlyPersonal} />
           <PurchaseLog purchases={visiblePurchases} />
         </div>
