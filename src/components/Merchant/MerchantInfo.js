@@ -45,7 +45,7 @@ class MerchantInfo extends Component {
         >
           <Form style={styles.form} onSubmit={this.handleSubmit}>
             <Form.Input name='productName' label='Name' value={productName} onChange={this.handleChange} />
-            <Form.Input name='productPrice' label='Price' type='number' value={productPrice} onChange={this.handleChange} />
+            <Form.Input name='productPrice' label='Price(Eth)' type='number' value={productPrice} onChange={this.handleChange} />
             <Form.Input name='productStock' label='Stock' type='number' value={productStock} onChange={this.handleChange} />
             <Form.Button>Create</Form.Button>
           </Form>

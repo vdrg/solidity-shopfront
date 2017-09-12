@@ -15,10 +15,11 @@ class Home extends Component {
   }
 
   handleBuyProduct = async (merchantAddress, productId, price) => {
+    const { web3 } = window;
     const { shopfrontContract, accounts } = this.state;
-    const success = await shopfrontContract.buyProduct.call(merchantAddress, productId, { from: accounts[0], value: price });
+    const success = await shopfrontContract.buyProduct.call(merchantAddress, productId, { from: accounts[0], value: web3.toWei(price) });
     if (success) {
-      const tx = await shopfrontContract.buyProduct(merchantAddress, productId, { from: accounts[0], value: price });
+      const tx = await shopfrontContract.buyProduct(merchantAddress, productId, { from: accounts[0], value: web3.toWei(price) });
       // console.log(tx);
     }
   }
@@ -54,7 +55,7 @@ class Home extends Component {
         const product = await merchantContract.getProductFromIndex(i);
         products[product[0]] = { 
           name: web3.toUtf8(product[1]),
-          price: product[2],
+          price: web3.fromWei(product[2]),
           stock: product[3]
         };
       }

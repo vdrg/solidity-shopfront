@@ -27,7 +27,7 @@ const getMerchantInfo = async (merchantContract) => {
   productArray.forEach(product => {
     products[product[0]] = {
       name: web3.toUtf8(product[1]),
-      price: product[2], 
+      price: web3.fromWei(product[2]), 
       stock: product[3] 
     };
   });
@@ -80,8 +80,9 @@ class Merchant extends Component {
   }
 
   handleAddProduct = async (name, price, stock) => {
+    const { web3 } = window;
     const { merchantContract, accounts } = this.state;
-    const tx = await merchantContract.addProduct(name, price, stock, { from: accounts[0], gas: 150000 })
+    const tx = await merchantContract.addProduct(name, web3.toWei(price), stock, { from: accounts[0], gas: 150000 })
     // console.log(tx);
   }
 
@@ -100,7 +101,7 @@ class Merchant extends Component {
         const { productId, productName: name, price, stock } = args;
         const newProduct = {
           name: web3.toUtf8(name),
-          price,
+          price: web3.fromWei(price),
           stock,
         }
         this.setState({ products: products.set(productId, newProduct) })
